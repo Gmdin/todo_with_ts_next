@@ -16,7 +16,10 @@ export type TodoContext = {
 export const todoContext = createContext<TodoContext | null>(null);
 
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
-  const [todo, setTodo] = useState<Todo[]>([]);
+  const [todo, setTodo] = useState<Todo[]>(() => {
+    const newTodos = localStorage.getItem("todo") || "[]";
+    return JSON.parse(newTodos) as Todo[];
+  });
   const handleAddTodo = (task: string) => {
     setTodo((prev) => {
       const newTodos: Todo[] = [
@@ -28,6 +31,7 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
         },
         ...prev,
       ];
+      localStorage.setItem("todo", JSON.stringify(newTodos));
       return newTodos;
     });
   };
@@ -39,12 +43,15 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
         }
         return task;
       });
+      localStorage.setItem("todo", JSON.stringify(newTodos));
+      localStorage.getItem("todo");
       return newTodos;
     });
   };
   const handTodoDelete = (id: string) => {
     setTodo((prev) => {
       const newTodos = prev.filter((task) => task.id !== id);
+      localStorage.setItem("todo", JSON.stringify(newTodos));
       return newTodos;
     });
   };
