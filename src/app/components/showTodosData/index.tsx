@@ -1,10 +1,21 @@
 "use client";
 import { useTodoContext } from "@/app/store/todo";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 const ShowTodoList = () => {
   const { todo, handTodoDelete, toggleTodoAsCompleted } = useTodoContext();
-  const filterList = todo;
+  const searchParams = useSearchParams();
+  const todosFilter = searchParams.get("todo");
+  let filterList;
+  if (todosFilter === "active") {
+    filterList = todo.filter((task) => task.completed === false);
+  } else if (todosFilter === "completed") {
+    filterList = todo.filter((task) => task.completed === true);
+  } else {
+    filterList = todo;
+  }
+
   return (
     <div>
       <ul>
