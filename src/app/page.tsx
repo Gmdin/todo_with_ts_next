@@ -8,10 +8,10 @@ const Home = () => {
     <>
       <main>
         <h2>Next + TypeScript</h2>
+        <Navbar />
+        <AddTodo />
+        <ShowTodoList />
       </main>
-      <Navbar />
-      <AddTodo />
-      <ShowTodoList />
     </>
   );
 };
